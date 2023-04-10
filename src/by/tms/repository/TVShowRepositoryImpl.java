@@ -10,27 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TVShowRepositoryImpl implements TVShowRepository {
+
+    final Path SERIES_FILE_NAME = Path.of("series.csv");
+    final Path FILMS_FILE_NAME = Path.of("films.csv");
+
     @Override
-    public List<? extends Show> getDataFromFile(Path path) throws IOException {
+    public List<Show> getDataFromFile() throws IOException {
 
-        List<Show> showList;
+        List<Film> filmList = filmsFileParser(FILMS_FILE_NAME);
+        List<Series> seriesList = seriesFileParser(SERIES_FILE_NAME);
 
-        switch (getFileName(path)) {
-            case "films" -> showList = (List<Show>) filmsFileParser(path);
-            case "series" -> showList = (List<Show>) seriesFileParser(path);
-            default -> throw new FileNotFoundException("No such file");
-        }
-
+        List<Show> showList = new ArrayList<>();
+        showList.addAll(filmList);
+        showList.addAll(seriesList);
 
         return showList;
     }
 
-    private static String getFileName(Path path) {
-        String fullFileName = path.toString();
-        return fullFileName.substring(fullFileName.lastIndexOf("\\") + 1, fullFileName.lastIndexOf("."));
-    }
-
-    private static List<? super Film> filmsFileParser(Path path) throws IOException {
+    private static List<Film> filmsFileParser(Path path) throws IOException {
 
         List<Film> filmsList = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(path.toString()));
@@ -51,9 +48,9 @@ public class TVShowRepositoryImpl implements TVShowRepository {
         return filmsList;
     }
 
-    private static List<? super Series> seriesFileParser(Path path) throws IOException {
+    private static List<Series> seriesFileParser(Path path) throws IOException {
 
-        List<Show> filmsList = new ArrayList<>();
+        List<Series> filmsList = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(path.toString()));
         String line;
 

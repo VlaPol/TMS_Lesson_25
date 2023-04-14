@@ -1,9 +1,14 @@
 package by.tms.models;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Predicate;
+
 public abstract class Show {
 
     private String showTitle;
-    private String releaseYear;
+    private int releaseYear;
     private String countryCode;
     private double rating;
     private int ratesCounter;
@@ -16,11 +21,11 @@ public abstract class Show {
         this.showTitle = showTitle;
     }
 
-    public String getReleaseYear() {
+    public int getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(String releaseYear) {
+    public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
 
@@ -58,4 +63,63 @@ public abstract class Show {
                 ", ratesCounter=" + ratesCounter +
                 '}';
     }
+
+    private static class CompareByName implements Comparator<Show> {
+
+        @Override
+        public int compare(Show show1, Show show2) {
+            return show1.getShowTitle().compareTo(show2.getShowTitle());
+        }
+    }
+
+    private static class CompareByCountry implements Comparator<Show> {
+
+        @Override
+        public int compare(Show show1, Show show2) {
+            return show1.getCountryCode().compareTo(show2.getCountryCode());
+        }
+    }
+
+    private static class CompareByYear implements Comparator<Show> {
+
+        @Override
+        public int compare(Show show1, Show show2) {
+            return Integer.compare(show2.getReleaseYear(), show1.getReleaseYear());
+        }
+    }
+
+    private static class CompareByRating implements Comparator<Show> {
+
+        @Override
+        public int compare(Show show1, Show show2) {
+            return Double.compare(show1.getRating(), show2.getRating());
+        }
+    }
+
+    private static class CompareByRatesCounter implements Comparator<Show> {
+
+        @Override
+        public int compare(Show show1, Show show2) {
+            return Integer.compare(show1.getRatesCounter(), show2.getRatesCounter());
+        }
+    }
+
+    public static final Comparator<Show> COMPARE_BY_NAME = new CompareByName();
+    public static final Comparator<Show> COMPARE_BY_COUNTRY = new CompareByCountry();
+    public static final Comparator<Show> COMPARE_BY_YEAR = new CompareByYear();
+    public static final Comparator<Show> COMPARE_BY_RATING = new CompareByRating();
+    public static final Comparator<Show> COMPARE_BY_RATES_COUNTER = new CompareByRatesCounter();
+    public static List<Comparator<Show>> getComparators() {
+
+        List<Comparator<Show>> comparators = new ArrayList<>();
+
+        comparators.add(COMPARE_BY_NAME);
+        comparators.add(COMPARE_BY_COUNTRY);
+        comparators.add(COMPARE_BY_YEAR);
+        comparators.add(COMPARE_BY_RATING);
+        comparators.add(COMPARE_BY_RATES_COUNTER);
+
+        return comparators;
+    }
+
 }

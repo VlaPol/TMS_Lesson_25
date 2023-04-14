@@ -37,7 +37,7 @@ public class TVShowRepositoryImpl implements TVShowRepository {
             String[] film = line.split(",");
             Film tmpFilm = new Film();
             tmpFilm.setShowTitle(film[0]);
-            tmpFilm.setReleaseYear(film[1]);
+            tmpFilm.setReleaseYear(Integer.parseInt(film[1]));
             tmpFilm.setCountryCode(film[2]);
             tmpFilm.setRating(Double.parseDouble(film[3]));
             tmpFilm.setRatesCounter(Integer.parseInt(film[4]));
@@ -58,7 +58,7 @@ public class TVShowRepositoryImpl implements TVShowRepository {
             String[] series = line.split(",");
             Series tmpSeries = new Series();
             tmpSeries.setShowTitle(series[0]);
-            tmpSeries.setReleaseYear(series[1]);
+            tmpSeries.setReleaseYear(Integer.parseInt(series[1]));
             tmpSeries.setLastEpisode(series[2]);
             tmpSeries.setCountryCode(series[3]);
             tmpSeries.setNumberOfSeasons(Integer.parseInt(series[4]));

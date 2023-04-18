@@ -11,11 +11,19 @@ public class Series extends Show {
     }
 
     public void setNumberOfSeasons(int numberOfSeasons) {
-        this.numberOfSeasons = numberOfSeasons;
+        if (numberOfSeasons > 0) {
+            this.numberOfSeasons = numberOfSeasons;
+        } else {
+            throw new RuntimeException("Количество сезонов должно быть больше нуля");
+        }
     }
 
     public void setNumberOfEpisodes(int numberOfEpisodes) {
-        this.numberOfEpisodes = numberOfEpisodes;
+        if (numberOfEpisodes > 0) {
+            this.numberOfEpisodes = numberOfEpisodes;
+        } else {
+            throw new RuntimeException("Количество серий должно быть больше нуля");
+        }
     }
 
     @Override

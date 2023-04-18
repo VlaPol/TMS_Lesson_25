@@ -1,10 +1,5 @@
 package by.tms.models;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Predicate;
-
 public abstract class Show {
 
     private String showTitle;
@@ -26,7 +21,11 @@ public abstract class Show {
     }
 
     public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+        if (releaseYear > 1800) {
+            this.releaseYear = releaseYear;
+        } else {
+            throw new RuntimeException("Проверьте значение введенного года");
+        }
     }
 
     public String getCountryCode() {
@@ -42,7 +41,11 @@ public abstract class Show {
     }
 
     public void setRating(double rating) {
-        this.rating = rating;
+        if (rating >= 0) {
+            this.rating = rating;
+        } else {
+            throw new RuntimeException("Рейтинг не может быт отрицательным");
+        }
     }
 
     public int getRatesCounter() {
@@ -50,7 +53,11 @@ public abstract class Show {
     }
 
     public void setRatesCounter(int ratesCounter) {
-        this.ratesCounter = ratesCounter;
+        if (ratesCounter >= 0) {
+            this.ratesCounter = ratesCounter;
+        } else {
+            throw new RuntimeException("Количество проголосовавших не может быт отрицательным");
+        }
     }
 
     @Override
@@ -62,64 +69,6 @@ public abstract class Show {
                 ", rating=" + rating +
                 ", ratesCounter=" + ratesCounter +
                 '}';
-    }
-
-    private static class CompareByName implements Comparator<Show> {
-
-        @Override
-        public int compare(Show show1, Show show2) {
-            return show1.getShowTitle().compareTo(show2.getShowTitle());
-        }
-    }
-
-    private static class CompareByCountry implements Comparator<Show> {
-
-        @Override
-        public int compare(Show show1, Show show2) {
-            return show1.getCountryCode().compareTo(show2.getCountryCode());
-        }
-    }
-
-    private static class CompareByYear implements Comparator<Show> {
-
-        @Override
-        public int compare(Show show1, Show show2) {
-            return Integer.compare(show2.getReleaseYear(), show1.getReleaseYear());
-        }
-    }
-
-    private static class CompareByRating implements Comparator<Show> {
-
-        @Override
-        public int compare(Show show1, Show show2) {
-            return Double.compare(show1.getRating(), show2.getRating());
-        }
-    }
-
-    private static class CompareByRatesCounter implements Comparator<Show> {
-
-        @Override
-        public int compare(Show show1, Show show2) {
-            return Integer.compare(show1.getRatesCounter(), show2.getRatesCounter());
-        }
-    }
-
-    public static final Comparator<Show> COMPARE_BY_NAME = new CompareByName();
-    public static final Comparator<Show> COMPARE_BY_COUNTRY = new CompareByCountry();
-    public static final Comparator<Show> COMPARE_BY_YEAR = new CompareByYear();
-    public static final Comparator<Show> COMPARE_BY_RATING = new CompareByRating();
-    public static final Comparator<Show> COMPARE_BY_RATES_COUNTER = new CompareByRatesCounter();
-    public static List<Comparator<Show>> getComparators() {
-
-        List<Comparator<Show>> comparators = new ArrayList<>();
-
-        comparators.add(COMPARE_BY_NAME);
-        comparators.add(COMPARE_BY_COUNTRY);
-        comparators.add(COMPARE_BY_YEAR);
-        comparators.add(COMPARE_BY_RATING);
-        comparators.add(COMPARE_BY_RATES_COUNTER);
-
-        return comparators;
     }
 
 }
